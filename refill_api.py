@@ -97,4 +97,4 @@ def authenticateKey (key: str) -> bool:
 # for i in range(10):
 #     print(keyGenerator.genKey(orders_list))
 
-makeOrder("231", "2sfefsf q3", "cicil gelipp", "ss@hmail.ca", "tylel 6", 2313414, 2, "2021-01-25T13:34:05.787000", "2021-01-25T13:34:05.787000", 13)
+# makeOrder("231", "2sfefsf q3", "cicil gelipp", "ss@hmail.ca", "tylel 6", 2313414, 2, "2021-01-25T13:34:05.787000", "2021-01-25T13:34:05.787000", 13)
