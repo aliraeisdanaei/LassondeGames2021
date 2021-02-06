@@ -70,8 +70,7 @@ def write_json(data, filename):
         json.dump(data, f, indent = 4)
 
 
-
-def authenticateKey (key: str) -> bool:
+def authenticateKey (key: str):
 
     utc = pytz.UTC
 
@@ -85,7 +84,7 @@ def authenticateKey (key: str) -> bool:
             # the time from the database needs to be located
             # the date in the database is in iso 8601 format
             if(pytz.utc.localize(datetime.datetime.utcnow()) >= utc.localize(dateutil.parser.parse(order["day_refill_available"]))):
-                return True
+                return order
     return False
 
 
