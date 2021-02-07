@@ -11,16 +11,15 @@ message = """\
 
     Thank you for placing an order for {1}.
     It will be available on {2}.
-    You have {3} refills left.
 
     Have a great day."""
 
-def send_email(pharamcy_email, order):
+def send_email(pharamcy_email, client, email, client_name, medicine, day_refill_available):
     msg = EmailMessage()
-    msg.set_content(message.format(order['client_name'], order["medicine"], order["day_refill_available"], order["numRefills"]))
+    msg.set_content(message.format(client_name, medicine, day_refill_available))
     msg['Subject'] = 'Your refill is on its way!'
     msg['From'] = sender
-    msg['To'] = order['client_email']
+    msg['To'] = client, email
 
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login(sender, password)
