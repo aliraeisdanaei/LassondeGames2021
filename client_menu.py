@@ -1,5 +1,5 @@
 import refill_api
-
+import refill_email
 
 def main_menu():
     print("#################################")
@@ -20,11 +20,12 @@ def main_menu():
     if(userIn.lower() == "q" or userIn.lower() == "quit" or userIn.lower() == "close" or len(userIn) < 6):
         exit()
     
+    order = refill_api.authenticateKey(userIn)
+    if(order):
 
-    if(client_api.authenticateKey(userIn)):
         # use the email script to send the email
         # if the email is sent then direct to success_screen
-
+        refill_email.send_email(order)
         success_screen()
     else:
         print("You have given us the wrong key. Please try again.\n")
@@ -36,7 +37,7 @@ def success_screen():
     print("#################################")
 
     print("\nSUCCESS! Your refill has been placed.")
-    print("You should get your medicin in 5 business days by mail.")
+    print("You should get your medicine in 5 business days by mail.")
     print("If you have any questions call us at (905)-737-4743\n")
 
 
