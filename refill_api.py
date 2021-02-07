@@ -12,7 +12,7 @@ import os
 
 
 url_orders = "https://www.eecs.yorku.ca/~aliraeis/data/orders.json"
-# url_pharmacies = "https://www.eecs.yorku.ca/~aliraeis/data/pharmacies.json"
+url_pharmacies = "https://www.eecs.yorku.ca/~aliraeis/data/pharmacies.json"
 # url_clients = "https://www.eecs.yorku.ca/~aliraeis/data/clients.json"
 
 dst = "/eecs/home/aliraeis/www/data/orders.json"
@@ -20,10 +20,10 @@ dst = "/eecs/home/aliraeis/www/data/orders.json"
 
 # gets the json file for the orders
 orders_response = requests.get(url_orders).json()
-
+pharmacies_response = requests.get(url_pharmacies).json()
 
 orders_list = orders_response["orders"]
-
+pharmacies_list = pharmacies_response["pharmacies"]
 
 # the method we use to save this information to the json file is really crude, 
 # but it works for now
@@ -37,10 +37,10 @@ def makeOrder(pharmacy_id: str, client_health_id: str, client_name: str, client_
         "client_email": client_email,
         "medicine": medicine,
         "Rx_num": Rx_num,
-        "numRefils": numRefils,
+        "numRefills": numRefils,
         "day_ordered": day_ordered,
         "day_refill_available": day_refill_available,
-        "employee_id": employee_id  
+        "employee_id": employee_id 
     }
 
     # download the file
@@ -87,6 +87,10 @@ def authenticateKey (key: str):
                 return order
     return False
 
+def getPharmacy(id):
+    for pharmacy in pharmacies_list:
+        if(pharmacies_list["id"] == id):
+            return pharmacy
 
 
 # print (authenticateKey("Z1v3Q8"))
