@@ -20,14 +20,15 @@ dst = "/eecs/home/aliraeis/www/data/orders.json"
 
 # gets the json file for the orders
 orders_response = requests.get(url_orders).json()
-pharmacies_response = requests.get(url_pharmacies).json()
+# pharmacies_response = requests.get(url_pharmacies).json()
 
 orders_list = orders_response["orders"]
-pharmacies_list = pharmacies_response["pharmacies"]
+# pharmacies_list = pharmacies_response["pharmacies"]
 
 # the method we use to save this information to the json file is really crude, 
 # but it works for now
-def makeOrder(pharmacy_id: str, client_health_id: str, client_name: str, client_email: str, medicine: str, Rx_num: int, numRefils: int, day_ordered, day_refill_available, employee_id: int):
+# the day_ordered & day_refill_available must be in iso 8601 format 
+def makeOrder(pharmacy_id, client_health_id, client_name, client_email, medicine, rx_num, numRefils, day_ordered, day_refill_available, employee_id, pharmacy_email) -> str:
     key = keyGenerator.genKey(orders_list)
     newOrder = {
         "key": key,
@@ -36,11 +37,12 @@ def makeOrder(pharmacy_id: str, client_health_id: str, client_name: str, client_
         "client_name": client_name,
         "client_email": client_email,
         "medicine": medicine,
-        "Rx_num": Rx_num,
+        "rx_num": rx_num,
         "numRefills": numRefils,
         "day_ordered": day_ordered,
         "day_refill_available": day_refill_available,
-        "employee_id": employee_id 
+        "employee_id": employee_id,
+        "pharmacy_email": pharmacy_email
     }
 
     # download the file
@@ -63,11 +65,16 @@ def makeOrder(pharmacy_id: str, client_health_id: str, client_name: str, client_
     # then remove the .orders.json file
     os.remove(".orders.json")
 
+    # returns the key
+    return key
 
 
 def write_json(data, filename):
     with open (filename, "w") as f:
         json.dump(data, f, indent = 4)
+
+
+
 
 
 def authenticateKey (key: str):
@@ -87,10 +94,15 @@ def authenticateKey (key: str):
                 return order
     return False
 
-def getPharmacy(id):
-    for pharmacy in pharmacies_list:
-        if(pharmacies_list["id"] == id):
-            return pharmacy
+def getPharmacy_email(key):
+    for order in orders_list:
+        if(order["key"] == key):
+            # the key matches so we get the email
+            return order["pharmacy_email"]
+
+
+
+# print (getPharmacy_email("A1vLmP"))
 
 
 # print (authenticateKey("Z1v3Q8"))
@@ -100,4 +112,4 @@ def getPharmacy(id):
 # for i in range(10):
 #     print(keyGenerator.genKey(orders_list))
 
-# makeOrder("231", "2sfefsf q3", "cicil gelipp", "ss@hmail.ca", "tylel 6", 2313414, 2, "2021-01-25T13:34:05.787000", "2021-01-25T13:34:05.787000", 13)
+# makeOrder("231", "2sfefsf q3", "cicil gelipp", "ss@hmail.ca", "tylel 6", 2313414, 2, "2021-01-25T13:34:05.787000", "2021-01-25T13:34:05.787000", 13, "mrrookie2@gmail.com")
